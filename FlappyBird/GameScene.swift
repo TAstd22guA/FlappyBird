@@ -6,7 +6,6 @@
 //
 
 
-
 /*
  画像：かわいいフリー素材集　いらすとや　URL：https://www.irasutoya.com
  paprika（vegetable_paprika_red）、satsumaimo（vegetable_satsumaimo_brown）、tougarashi（vegetable_kyouyasai_manganji_tougarashi）、
@@ -14,10 +13,9 @@
  ※（）内は元のファイル名
  
  音源：無料BGM・効果音のフリー音源素材　springin（スプリンギン）　URL:https://www.springin.org/sound-stock/
- get（8bit獲得1）、damage（クラッカー2）、BGM（自然_01）、GameOverBgm（8bit失敗3）
+ get（8bit獲得1）、crash（クラッカー2）、BGM（自然_01）、GameOverBgm（8bit失敗3）
  ※（）内は元のファイル名
  */
-
 
 
 import SpriteKit
@@ -31,7 +29,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     /*
      itemを追加
      */
-    var item:SKSpriteNode!
+    var itemNode:SKNode!
     /*GameOverを追加
      */
     var gameOverImage = SKSpriteNode()
@@ -69,7 +67,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     //アイテムをゲットしたときのサウンド
     let getSound = SKAction.playSoundFileNamed("get.mp3", waitForCompletion : false)
     //衝突したときのサウンド
-    let damage = SKAction.playSoundFileNamed("damage.mp3", waitForCompletion : false)
+    let crash = SKAction.playSoundFileNamed("crash.mp3", waitForCompletion : false)
     //GameOverのサウンド
     let GameOverSound = SKAction.playSoundFileNamed("GameOverBgm.mp3", waitForCompletion : false)
     //Soundの再生・停止
@@ -95,6 +93,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         wallNode = SKNode()
         scrollNode.addChild(wallNode)
         
+        /*
+         item用のノード
+         */
+        itemNode = SKNode()
+        scrollNode.addChild(itemNode)   //scrollNodeに追加
+        
+        
         //サウンドを追加
         addChild(bgm)
         
@@ -103,6 +108,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         setupCloud()
         setupWall()
         setupBird()
+        
+        /*itemを追加
+         */
+        setupItem()
         
         // スコア表示ラベルの設定
         setupScoreLabel()   // 追加
@@ -244,30 +253,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     
-    
-    /*
-     壁とアイテムの出現が一体として、func setupWall()内でitemを生成する
-     */
     func setupWall() {
         // 壁の画像を読み込む
         let wallTexture = SKTexture(imageNamed: "wall")
         wallTexture.filteringMode = .linear
         
-        /*
-         item用に"ground"の画像を読み込む
-         */
-        let groundTexture = SKTexture(imageNamed: "ground")
-        
-        
-        /*
-         壁が消去されるとitemも消去になるので、壁のwidthを調整
-         */
-        let wallTextureAdd = wallTexture.size().width * 2
         // 移動する距離を計算
-        let movingDistance = self.frame.size.width + wallTextureAdd
+        let movingDistance = self.frame.size.width + wallTexture.size().width
         
         // 画面外まで移動するアクションを作成
-        let moveWall = SKAction.moveBy(x: -movingDistance, y: 0, duration:8)
+        let moveWall = SKAction.moveBy(x: -movingDistance, y: 0, duration:6)
         
         // 自身を取り除くアクションを作成
         let removeWall = SKAction.removeFromParent()
@@ -340,39 +335,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             wall.addChild(scoreNode)
             // --- ここまで追加 ---
             
-            
             // 壁をまとめるノードにアニメーションを設定
             wall.run(wallAnimation)
             
             // 壁を表示するノードに今回作成した壁を追加
             self.wallNode.addChild(wall)
-            
-            
-            /*
-             itema作成
-             */
-            //item画像の取り込み
-            let textureNumber = Int.random(in: 0...3)
-            let itemName = ["paprika", "satsumaimo", "tougarashi", "youngcorn"]
-            let itemTexture = SKTexture(imageNamed: itemName[textureNumber])
-            itemTexture.filteringMode = SKTextureFilteringMode.linear
-            
-            //itemのy軸、x軸をランダムに生成
-            let item_y_range = self.frame.size.height - itemTexture.size().height -  groundTexture.size().height
-            let item_y = CGFloat.random(in:0...item_y_range) + itemTexture.size().height / 2 + groundTexture.size().height
-            let item_x_range = (self.frame.size.width + wallTexture.size().width) / 3
-            let item_x = CGFloat.random(in:0...item_x_range) + (wallTexture.size().width + itemTexture.size().width) / 2
-            
-            // itemのスプライトを作成
-            self.item = SKSpriteNode(texture: itemTexture)
-            self.item.position = CGPoint(x: item_x, y: item_y)
-            wall.addChild(self.item)
-            
-            // スプライトに物理演算を設定する
-            self.item.physicsBody = SKPhysicsBody(circleOfRadius: itemTexture.size().height / 2)
-            // 衝突の時に動かないように設定する
-            self.item.physicsBody?.isDynamic = false
-            self.item.physicsBody?.categoryBitMask = self.itemCategory
             
         })
         // 次の壁作成までの時間待ちのアクションを作成
@@ -409,7 +376,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         bird.physicsBody?.collisionBitMask = groundCategory | wallCategory    // ←追加
         
         /*itmeカテゴリーを追加*/
-        bird.physicsBody?.contactTestBitMask = groundCategory | wallCategory | scoreCategory  | itemCategory
+        bird.physicsBody?.contactTestBitMask = groundCategory | wallCategory | scoreCategory
         
         // 衝突した時に回転させない
         bird.physicsBody?.allowsRotation = false    // ←追加
@@ -421,6 +388,77 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         addChild(bird)
         
     }
+    
+    
+    /*
+     itemを作成
+     */
+    func setupItem() {
+        
+        /*
+         item用に"wall"と"ground"の画像を読み込む
+         */
+        let wallTexture = SKTexture(imageNamed: "wall")
+        let groundTexture = SKTexture(imageNamed: "ground")
+        
+        //移動する距離を計算
+        let movingDistance = CGFloat(self.frame.size.width * 2)
+        
+        // 画面外まで移動するアクションを作成
+        let moveItem = SKAction.moveBy(x: -movingDistance, y: 0, duration:4.0)
+        
+        // 自身を取り除くアクションを作成
+        let removeItem = SKAction.removeFromParent()
+        
+        // 2つのアニメーションを順に実行するアクションを作成
+        let itemAnimation = SKAction.sequence([moveItem, removeItem])
+        
+        // アイテムを生成するアクションを作成
+        let createItemAnimation = SKAction.run ({
+            
+            //item画像の取り込み
+            let textureNumber = Int.random(in: 0...3)
+            let itemName = ["paprika", "satsumaimo", "tougarashi", "youngcorn"]
+            let itemTexture = SKTexture(imageNamed: itemName[textureNumber])
+            itemTexture.filteringMode = .linear
+            
+            
+            // アイテム関連のノードをのせるノードを作成
+            let item = SKNode()
+            item.position = CGPoint(x: self.frame.size.width + itemTexture.size().width / 2, y: 0.0)
+            
+            //itemのy軸、x軸をランダムに生成
+            let item_y_range = self.frame.size.height - itemTexture.size().height -  groundTexture.size().height
+            let item_y = CGFloat.random(in:0...item_y_range) + itemTexture.size().height / 2 + groundTexture.size().height
+            let item_x_range = (self.frame.size.width + wallTexture.size().width) / 3
+            let item_x = CGFloat.random(in:0...item_x_range) + (wallTexture.size().width + itemTexture.size().width) / 2
+            
+            //アイテムを生成
+            let itemSprite = SKSpriteNode(texture: itemTexture)
+            itemSprite.position = CGPoint(x: item_x, y: item_y)
+            //重力を設定
+            itemSprite.physicsBody = SKPhysicsBody(rectangleOf: CGSize(width: itemSprite.size.width, height: itemSprite.size.height))
+            itemSprite.physicsBody?.isDynamic = false
+            itemSprite.physicsBody?.categoryBitMask = self.itemCategory
+            itemSprite.physicsBody?.contactTestBitMask = self.birdCategory   //衝突判定させる相手のカテゴリを設定
+            
+            item.addChild(itemSprite)
+            
+            item.run(itemAnimation)
+            
+            self.itemNode.addChild(item)
+            
+        })
+        // 次のアイテム作成までの待ち時間のアクションを作成
+        let waitAnimation = SKAction.wait(forDuration: 2)
+        
+        // アイテムを作成->待ち時間->アイテムを作成を無限に繰り替えるアクションを作成
+        let repeatForeverAnimation = SKAction.repeatForever(SKAction.sequence([createItemAnimation, waitAnimation]))
+        
+        itemNode.run(repeatForeverAnimation)
+        
+    }
+    
     
     // SKPhysicsContactDelegateのメソッド。衝突したときに呼ばれる
     func didBegin(_ contact: SKPhysicsContact) {
@@ -506,7 +544,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             /*
              GemeOverのBgm(衝突したときのサウンドのあとに、GameOverのサウンドを再生する)
              */
-            self.run(damage)
+            self.run(crash)
             DispatchQueue.main.asyncAfter(deadline : .now() + 1) {
                 self.run(self.GameOverSound)
             }

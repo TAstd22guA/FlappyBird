@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		9E27EA482A9ACBB90091A564 /* BGM.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 9E27EA472A9ACBB90091A564 /* BGM.mp3 */; };
 		9E27EA4C2A9ACBD50091A564 /* get.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 9E27EA4B2A9ACBD50091A564 /* get.mp3 */; };
-		9E27EA4E2A9AD8200091A564 /* damage.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 9E27EA4D2A9AD8200091A564 /* damage.mp3 */; };
 		9E4187882A9C22F4008008CA /* GameOverBgm.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 9E4187872A9C22F4008008CA /* GameOverBgm.mp3 */; };
 		9E4F1B4B2A948CA9003C634C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E4F1B4A2A948CA9003C634C /* AppDelegate.swift */; };
 		9E4F1B4D2A948CA9003C634C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E4F1B4C2A948CA9003C634C /* SceneDelegate.swift */; };
@@ -18,12 +17,12 @@
 		9E4F1B542A948CAB003C634C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9E4F1B532A948CAB003C634C /* Assets.xcassets */; };
 		9E4F1B572A948CAB003C634C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9E4F1B552A948CAB003C634C /* LaunchScreen.storyboard */; };
 		9E4F1B632A9490A8003C634C /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E4F1B622A9490A8003C634C /* GameScene.swift */; };
+		9EA1B2A82A9C9E2A0029AB04 /* crash.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 9EA1B2A72A9C9E2A0029AB04 /* crash.mp3 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		9E27EA472A9ACBB90091A564 /* BGM.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = BGM.mp3; sourceTree = "<group>"; };
 		9E27EA4B2A9ACBD50091A564 /* get.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = get.mp3; sourceTree = "<group>"; };
-		9E27EA4D2A9AD8200091A564 /* damage.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = damage.mp3; path = "../../lesson7-sound/名称未設定フォルダ 2/damage.mp3"; sourceTree = "<group>"; };
 		9E4187872A9C22F4008008CA /* GameOverBgm.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = GameOverBgm.mp3; sourceTree = "<group>"; };
 		9E4F1B472A948CA9003C634C /* FlappyBird.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FlappyBird.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9E4F1B4A2A948CA9003C634C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -34,6 +33,7 @@
 		9E4F1B562A948CAB003C634C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9E4F1B582A948CAB003C634C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9E4F1B622A9490A8003C634C /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
+		9EA1B2A72A9C9E2A0029AB04 /* crash.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = crash.mp3; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,8 +51,8 @@
 			isa = PBXGroup;
 			children = (
 				9E27EA4B2A9ACBD50091A564 /* get.mp3 */,
-				9E27EA4D2A9AD8200091A564 /* damage.mp3 */,
 				9E27EA472A9ACBB90091A564 /* BGM.mp3 */,
+				9EA1B2A72A9C9E2A0029AB04 /* crash.mp3 */,
 				9E4187872A9C22F4008008CA /* GameOverBgm.mp3 */,
 			);
 			name = sound;
@@ -149,8 +149,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				9E4F1B572A948CAB003C634C /* LaunchScreen.storyboard in Resources */,
-				9E27EA4E2A9AD8200091A564 /* damage.mp3 in Resources */,
 				9E4F1B542A948CAB003C634C /* Assets.xcassets in Resources */,
+				9EA1B2A82A9C9E2A0029AB04 /* crash.mp3 in Resources */,
 				9E4F1B522A948CA9003C634C /* Main.storyboard in Resources */,
 				9E27EA4C2A9ACBD50091A564 /* get.mp3 in Resources */,
 				9E27EA482A9ACBB90091A564 /* BGM.mp3 in Resources */,
